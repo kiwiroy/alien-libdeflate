@@ -22,14 +22,25 @@ share {
 
   meta_prop->{destdir} = 1;
 
+  # Available targets:
+  # ------------------
+  # -e libdeflate.a
+  # -e libdeflate.so
+  # -e gzip
+  # -e gunzip
+  # -e benchmark
+  # -e test_checksums
+  # -e checksum
+
   build [
-    '%{make} libdeflate.a test_programs',
+    '%{make} libdeflate.a gzip gunzip checksum',
     sub {
       my $build = shift;
       my @dirs;
       my %fileset = (
-        'libdeflate.h' => 'include/libdeflate.h',
-        'libdeflate.a' => 'lib/libdeflate.a',
+        (map { $_ => path('include')->child($_)->stringify } qw{libdeflate.h}),
+        (map { $_ => path('lib')->child($_)->stringify } qw{libdeflate.a}),
+        (map { $_ => path('bin')->child($_)->stringify } qw{checksum gzip gunzip}),
       );
 
       $build->log("copy stuff to $ENV{DESTDIR}");
@@ -37,7 +48,7 @@ share {
       my $destdir_abs = path($destdir)->child($build->install_prop->{prefix});
 
       push @dirs, $destdir_abs->child($_)->stringify
-        for (qw{include lib});
+        for (qw{include lib bin});
 
       Alien::Build::CommandSequence->new(
         (map { join ' ', '%{install} -d', $_ } @dirs),
