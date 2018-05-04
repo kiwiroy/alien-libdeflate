@@ -40,6 +40,7 @@ MODULE = CompileTest PACKAGE = CompileTest
 char *check(class)
   char *class;
   CODE:
+    struct libdeflate_compressor * cmpr = libdeflate_alloc_compressor(3);
     RETVAL = class;
   OUTPUT:
     RETVAL
