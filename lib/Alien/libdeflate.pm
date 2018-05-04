@@ -14,6 +14,25 @@ __END__
 
 =encoding UTF-8
 
+=begin html
+
+<a href="https://www.perl.org/get.html">
+  <img src="https://img.shields.io/badge/perl-5.8.9+-blue.svg"
+       alt="Requires Perl 5.8.9+" />
+</a>
+<!-- CPAN -->
+<a href="https://metacpan.org/pod/Alien::libdeflate">
+  <img src="https://img.shields.io/cpan/v/Alien-libdeflate.svg"
+       alt="CPAN" />
+</a>
+<!-- Travis -->
+<a href="https://travis-ci.org/kiwiroy/alien-libdeflate">
+  <img src="https://travis-ci.org/kiwiroy/alien-libdeflate.svg?branch=master"
+       alt="Travis Buils Status" />
+</a>
+
+=end html
+
 =head1 NAME
 
 Alien::libdeflate - Fetch/build/stash the libdeflate headers and libs for
