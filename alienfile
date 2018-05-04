@@ -9,6 +9,7 @@ use Alien::Build::CommandSequence;
 
 our $deflate_version = '1.0';
 
+## default helper deps Alien::MSYS for all systems?
 meta->interpolator->replace_helper(install => sub {
   return 'install';
 });
@@ -33,7 +34,7 @@ share {
   # -e checksum
 
   build [
-    '%{make} libdeflate.a gzip gunzip checksum',
+    '%{make} libdeflate.a gzip gunzip checksum CFLAGS=-fPIC',
     sub {
       my $build = shift;
       my @dirs;

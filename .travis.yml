@@ -35,4 +35,4 @@ before_install:
     fi
 
 install:
-  - cpanm --installdeps -n -q .
+  - cpanm --with-develop --installdeps -n -q .

@@ -21,7 +21,8 @@ on build => sub {
 };
 
 on develop => sub {
-  requires 'App::af' => 0;
+  ## faster without App::af
+  requires 'App::af' => 0 unless $ENV{CI};
   requires 'Test::Pod' => 0;
   requires 'Test::Pod::Coverage' => 0;
   requires 'Test::CPAN::Changes' => 0;
