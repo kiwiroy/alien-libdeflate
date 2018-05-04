@@ -16,8 +16,6 @@ matrix:
   exclude:
     - os: osx
       perl: "5.14"
-  allow_failures:
-    - os: osx
 
 perl:
   - "5.14"
