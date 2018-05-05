@@ -15,8 +15,12 @@ meta->interpolator->replace_helper(install => sub {
 });
 
 plugin 'Probe::CBuilder' => (
-  libs => '-ldeflate'
-);
+  cflags => join(' ', grep { defined && length } $ENV{ALIEN_LIBDEFLATE_PROBE_CFLAGS}),
+  libs   => join(' ', grep { defined && length } $ENV{ALIEN_LIBDEFLATE_PROBE_LDFLAGS}, '-ldeflate'),
+  program => <<'END_OF_CODE');
+#include <libdeflate.h>
+int main(int argc, char *argv[]) { return 0; }
+END_OF_CODE
 
 share {
   ## *bsd make is incompatible

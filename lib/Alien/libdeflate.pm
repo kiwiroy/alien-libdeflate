@@ -73,4 +73,22 @@ the libdeflate GitHub L<repository|https://github.com/ebiggers/libdeflate>.
 
 kiwiroy
 
+=head1 INFLUENTIAL ENVIRONMENT VARIABLES
+
+=over 4
+
+=item ALIEN_LIBDEFLATE_PROBE_CFLAGS
+
+If I<libdeflate> is installed system wide in an alternate location than the
+default search paths, set this variable to add the B<include> directory using
+C<-I/path/to/system/libdeflate/include>
+
+=item ALIEN_LIBDEFLATE_PROBE_LDFLAGS
+
+If I<libdeflate> is installed system wide in an alternate location than the
+default search paths, set this variable to add the B<lib> directory using
+C<-L/path/to/system/libdeflate/lib>
+
+=back
+
 =cut

@@ -11,6 +11,7 @@ osx_image: xcode7.3
 env:
   - ALIEN_INSTALL_TYPE=share
   - ALIEN_INSTALL_TYPE=default
+  - ALIEN_INSTALL_TYPE=system
 
 matrix:
   exclude:
@@ -30,6 +31,14 @@ before_install:
       cpanm --version
       env | grep -i ^perl
       export SSL_DIR=/usr/local/Cellar/openssl/1.0.2j
+    fi
+  - |
+    if [[ "$ALIEN_INSTALL_TYPE" == "system" ]]; then
+      curl -Lo $HOME/libdeflate.tar.gz https://github.com/ebiggers/libdeflate/archive/v1.0.tar.gz
+      tar -C $HOME -zxf $HOME/libdeflate.tar.gz
+      make -C $HOME/libdeflate-1.0 libdeflate.a gzip gunzip checksum CFLAGS=-fPIC
+      export ALIEN_LIBDEFLATE_PROBE_CFLAGS=-I$HOME/libdeflate-1.0
+      export ALIEN_LIBDEFLATE_PROBE_LDFLAGS=-L$HOME/libdeflate-1.0
     fi
 
 install:
