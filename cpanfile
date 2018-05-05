@@ -10,6 +10,7 @@ on configure => sub {
 on build => sub {
   requires 'Alien::Build'        => '1.41';
   requires 'Alien::Build::MM'    => '1.41';
+  requires 'Alien::gmake'        => 0;
   requires 'ExtUtils::MakeMaker' => 0;
   requires 'HTML::LinkExtor' => 0;
   requires 'IO::Socket::SSL' => 0;

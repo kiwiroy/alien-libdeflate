@@ -14,7 +14,14 @@ meta->interpolator->replace_helper(install => sub {
   return 'install';
 });
 
+plugin 'Probe::CBuilder' => (
+  libs => '-ldeflate'
+);
+
 share {
+  ## *bsd make is incompatible
+  requires 'Alien::gmake' => 0;
+
   start_url "https://github.com/ebiggers/libdeflate/archive/v${deflate_version}.tar.gz";
 
   plugin Download => ( version => qr/([0-9\.]+)/, bootstrap_ssl => 1 );
@@ -34,7 +41,7 @@ share {
   # -e checksum
 
   build [
-    '%{make} libdeflate.a gzip gunzip checksum CFLAGS=-fPIC',
+    '%{gmake} libdeflate.a gzip gunzip checksum CFLAGS=-fPIC',
     sub {
       my $build = shift;
       my @dirs;
