@@ -73,7 +73,7 @@ the libdeflate GitHub L<repository|https://github.com/ebiggers/libdeflate>.
 
 kiwiroy
 
-=head1 INFLUENTIAL ENVIRONMENT VARIABLES
+=head2 Influential Environment Variables
 
 =over 4
 
