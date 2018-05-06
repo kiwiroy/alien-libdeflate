@@ -1,6 +1,6 @@
 Revision history for perl distribution Alien-libdeflate
 
-0.02 Not Released
+0.02 2018-05-06T21:12:47+1200
  - Use gmake to build
  - Support system install using cbuilder probe and correctly test
 
