@@ -29,4 +29,8 @@ on develop => sub {
   requires 'Test::CPAN::Changes' => 0;
 };
 
+feature release => 'release testing' => sub {
+  test_requires 'Test::Kwalitee' => 0;
+};
+
 test_requires 'Test::More' => '0.88';
