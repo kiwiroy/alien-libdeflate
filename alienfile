@@ -7,7 +7,7 @@ use alienfile;
 use Path::Tiny qw{path};
 use Alien::Build::CommandSequence;
 
-our $deflate_version = '1.0';
+our $deflate_version = '1.1';
 
 ## default helper deps Alien::MSYS for all systems?
 meta->interpolator->replace_helper(install => sub {
