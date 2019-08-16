@@ -7,6 +7,10 @@ use Alien::libdeflate;
 
 alien_ok 'Alien::libdeflate';
 
+diag "Version Info";
+diag join "\t", qw{Mod Lib};
+diag join "\t", $Alien::libdeflate::VERSION, Alien::libdeflate->version;
+
 SKIP: {
   skip "system install", 9 if Alien::libdeflate->install_type eq 'system';
 

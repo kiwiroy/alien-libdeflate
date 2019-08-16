@@ -2,25 +2,24 @@ language: perl
 
 sudo: false
 
-os:
-  - linux
-  - osx
-
-osx_image: xcode7.3
-
-env:
-  - ALIEN_INSTALL_TYPE=share
-  - ALIEN_INSTALL_TYPE=default
-  - ALIEN_INSTALL_TYPE=system
-
 matrix:
-  exclude:
-    - os: osx
-      perl: "5.14"
-
-perl:
-  - "5.14"
-  - "5.26"
+  include:
+    - perl: "5.30"
+      env:
+        ALIEN_INSTALL_TYPE=share
+    - perl: "5.30"
+      env:
+        ALIEN_INSTALL_TYPE=default
+    - perl: "5.30"
+      env:
+        - ALIEN_INSTALL_TYPE=system
+        - LIBDEFLATE_SYSTEM_VERSION=1.0
+    - perl: "5.26"
+    - perl: "5.14"
+      dist: trusty
+    - perl: "5.26"
+      os: osx
+      osx_image: xcode7.3
 
 before_install:
   - |
@@ -34,11 +33,11 @@ before_install:
     fi
   - |
     if [[ "$ALIEN_INSTALL_TYPE" == "system" ]]; then
-      curl -Lo $HOME/libdeflate.tar.gz https://github.com/ebiggers/libdeflate/archive/v1.0.tar.gz
+      curl -Lo $HOME/libdeflate.tar.gz https://github.com/ebiggers/libdeflate/archive/v${LIBDEFLATE_SYSTEM_VERSION}.tar.gz
       tar -C $HOME -zxf $HOME/libdeflate.tar.gz
-      make -C $HOME/libdeflate-1.0 libdeflate.a gzip gunzip checksum CFLAGS=-fPIC
-      export ALIEN_LIBDEFLATE_PROBE_CFLAGS=-I$HOME/libdeflate-1.0
-      export ALIEN_LIBDEFLATE_PROBE_LDFLAGS=-L$HOME/libdeflate-1.0
+      make -C $HOME/libdeflate-${LIBDEFLATE_SYSTEM_VERSION} libdeflate.a gzip gunzip checksum CFLAGS=-fPIC
+      export ALIEN_LIBDEFLATE_PROBE_CFLAGS=-I$HOME/libdeflate-${LIBDEFLATE_SYSTEM_VERSION}
+      export ALIEN_LIBDEFLATE_PROBE_LDFLAGS=-L$HOME/libdeflate-${LIBDEFLATE_SYSTEM_VERSION}
     fi
 
 install:

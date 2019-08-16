@@ -19,6 +19,7 @@ on build => sub {
   requires 'Sort::Versions'  => 0;
   requires 'URI'             => 0;
   requires 'URI::Escape'     => 0;
+  requires 'Mojo::DOM58'     => 0;
 };
 
 on develop => sub {
