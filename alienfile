@@ -46,12 +46,13 @@ share {
 
   build [
     '%{gmake} libdeflate.a gzip gunzip checksum CFLAGS=-fPIC',
+    '%{gmake} libdeflate.so',
     sub {
       my $build = shift;
       my @dirs;
       my %fileset = (
         (map { $_ => path('include')->child($_)->stringify } qw{libdeflate.h}),
-        (map { $_ => path('lib')->child($_)->stringify } qw{libdeflate.a}),
+        (map { $_ => path('lib')->child($_)->stringify } qw{libdeflate.a libdeflate.so}),
         (map { $_ => path('bin')->child($_)->stringify } qw{checksum gzip gunzip}),
       );
 
@@ -71,17 +72,19 @@ share {
     }
   ];
 
-  after gather => sub {
-    my $build = shift;
-    my $prefix = path($build->install_prop->{prefix})->absolute;
-    my @dirs;
-    push @dirs, $prefix->child($_)->stringify for (qw{include lib});
+  plugin 'Gather::IsolateDynamic';
 
-    $build->runtime_prop->{version} = $deflate_version;
-    $build->runtime_prop->{cflags} = $build->runtime_prop->{cflags_static}
-      = "-I$dirs[0]";
-    $build->runtime_prop->{libs} = $build->runtime_prop->{libs_static}
-      = "-L$dirs[1] -ldeflate";
+  after gather => sub {
+    my $build   = shift;
+    my $prefix  = path($build->install_prop->{prefix})->absolute;
+    my $lib     = $prefix->child('lib')->stringify;
+    my $include = $prefix->child('include');
+    my $dynamic = $prefix->child('lib', 'dynamic');
+    
+    $build->runtime_prop->{version}     = $deflate_version;
+    $build->runtime_prop->{cflags}      = "-I$include";
+    $build->runtime_prop->{libs}        = "-L$dynamic -ldeflate";
+    $build->runtime_prop->{libs_static} = "-L$lib -ldeflate";
   };
 
 };

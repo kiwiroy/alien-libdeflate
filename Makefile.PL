@@ -35,7 +35,8 @@ WriteMakefile($abmm->mm_args(
     'Sort::Versions'      => '0',
     'Test::More'          => '0.88',
     'URI'                 => '0',
-    'URI::Escape'         => '0'
+    'URI::Escape'         => '0',
+    'Mojo::DOM58'         => '0',
   },
   PREREQ_PM => {
     'perl' => '5.008009'

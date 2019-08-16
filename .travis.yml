@@ -2,25 +2,23 @@ language: perl
 
 sudo: false
 
-os:
-  - linux
-  - osx
-
-osx_image: xcode7.3
-
-env:
-  - ALIEN_INSTALL_TYPE=share
-  - ALIEN_INSTALL_TYPE=default
-  - ALIEN_INSTALL_TYPE=system
-
 matrix:
-  exclude:
-    - os: osx
-      perl: "5.14"
-
-perl:
-  - "5.14"
-  - "5.26"
+  include:
+    - perl: "5.30"
+      env:
+        ALIEN_INSTALL_TYPE=share
+    - perl: "5.30"
+      env:
+        ALIEN_INSTALL_TYPE=default
+    - perl: "5.30"
+      env:
+        ALIEN_INSTALL_TYPE=system
+    - perl: "5.26"
+    - perl: "5.14"
+      dist: trusty
+    - perl: "5.26"
+      os: osx
+      osx_image: xcode7.3
 
 before_install:
   - |
