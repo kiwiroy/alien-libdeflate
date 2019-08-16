@@ -20,7 +20,13 @@ matrix:
     - perl: "5.26"
       os: osx
       osx_image: xcode7.3
-
+    - language: c
+      os: windows
+      env:
+        - TRAVIS_PERL_VERSION="5.30.0_64"
+        - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
+        - BERRYBREW_V1_24_IN_CHOCO=false
+        
 before_install:
   - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
@@ -30,6 +36,26 @@ before_install:
       cpanm --version
       env | grep -i ^perl
       export SSL_DIR=/usr/local/Cellar/openssl/1.0.2j
+    fi
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
+      env | grep -i ^TRAVIS
+      if [[ "$BERRYBREW_V1_24_IN_CHOCO" == "true" ]]; then
+        choco install berrybrew
+      else
+        git clone -b v1.24 https://github.com/stevieb9/berrybrew
+        cd berrybrew
+        rm bin/berrybrew.exe
+        export PATH="$MSBUILD_PATH:$MSBUILD_PATH\Roslyn:$PATH"
+        # MSBuild.exe -nologo -p:Configuration=Release;Platform=x64 berrybrew.csproj
+        csc.exe -lib:bin -t:library -r:Newtonsoft.Json.dll,ICSharpCode.SharpZipLib.dll -out:bin/bbapi.dll src/berrybrew.cs
+        csc.exe -lib:bin -r:bbapi.dll -out:bin/berrybrew.exe -win32icon:inc/berrybrew.ico src/bbconsole.cs
+        ./bin/berrybrew.exe config
+      fi
+      berrybrew install $TRAVIS_PERL_VERSION
+      berrybrew switch $TRAVIS_PERL_VERSION
+      which perl
+      perl --version
     fi
   - |
     if [[ "$ALIEN_INSTALL_TYPE" == "system" ]]; then
