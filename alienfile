@@ -23,6 +23,7 @@ END_OF_CODE
 share {
   ## *bsd make is incompatible
   requires 'Alien::gmake' => 0;
+  requires 'Config';
 
   start_url "https://github.com/ebiggers/libdeflate/releases";
   plugin Download => (
@@ -44,16 +45,28 @@ share {
   # -e test_checksums
   # -e checksum
 
+  my $CC = qq(CC=@{[ $Config::Config{cc} ]});
+  my $static_lib = 'libdeflate.a';
+  my $shared_lib = qq(libdeflate.@{[ $Config::Config{so} ]});
+  my @progs = map { "$_@{[ $Config::Config{_exe} ]}" } qw(gzip gunzip checksum);
   build [
-    '%{gmake} libdeflate.a gzip gunzip checksum CFLAGS=-fPIC',
-    '%{gmake} libdeflate.so',
+    [ '%{gmake}',
+        $CC,
+        $static_lib, qw(STATIC_LIB_SUFFIX=.a),
+        @progs,
+        qw(CFLAGS=-fPIC),
+    ],
+    [ '%{gmake}',
+        $CC,
+        $shared_lib,
+    ],
     sub {
       my $build = shift;
       my @dirs;
       my %fileset = (
         (map { $_ => path('include')->child($_)->stringify } qw{libdeflate.h}),
-        (map { $_ => path('lib')->child($_)->stringify } qw{libdeflate.a libdeflate.so}),
-        (map { $_ => path('bin')->child($_)->stringify } qw{checksum gzip gunzip}),
+        (map { $_ => path('lib')->child($_)->stringify } ( $static_lib, $shared_lib )),
+        (map { $_ => path('bin')->child($_)->stringify } @progs),
       );
 
       $build->log("copy stuff to $ENV{DESTDIR}");
