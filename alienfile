@@ -7,8 +7,6 @@ use alienfile;
 use Path::Tiny qw{path};
 use Alien::Build::CommandSequence;
 
-our $deflate_version = '1.0';
-
 ## default helper deps Alien::MSYS for all systems?
 meta->interpolator->replace_helper(install => sub {
   return 'install';
@@ -26,9 +24,11 @@ share {
   ## *bsd make is incompatible
   requires 'Alien::gmake' => 0;
 
-  start_url "https://github.com/ebiggers/libdeflate/archive/v${deflate_version}.tar.gz";
-
-  plugin Download => ( version => qr/([0-9\.]+)/, bootstrap_ssl => 1 );
+  start_url "https://github.com/ebiggers/libdeflate/releases";
+  plugin Download => (
+    filter => qr/^v.*\.tar\.gz$/,
+    version => qr/([0-9\.]+)/,
+  );
 
   plugin Extract => ( format => 'tar.gz' );
 
@@ -81,7 +81,6 @@ share {
     my $include = $prefix->child('include');
     my $dynamic = $prefix->child('lib', 'dynamic');
     
-    $build->runtime_prop->{version}     = $deflate_version;
     $build->runtime_prop->{cflags}      = "-I$include";
     $build->runtime_prop->{libs}        = "-L$dynamic -ldeflate";
     $build->runtime_prop->{libs_static} = "-L$lib -ldeflate";
