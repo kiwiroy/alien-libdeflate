@@ -33,7 +33,7 @@ share {
 
   plugin Extract => ( format => 'tar.gz' );
 
-  meta_prop->{destdir} = 1;
+  meta_prop->{destdir} = $^O ne 'MSWin32' ? 1 : 0;
 
   # Available targets:
   # ------------------
@@ -69,17 +69,28 @@ share {
         (map { $_ => path('bin')->child("libdeflate-$_")->stringify } @progs),
       );
 
-      $build->log("copy stuff to $ENV{DESTDIR}");
-      my $destdir     = $ENV{DESTDIR};
-      my $destdir_abs = path($destdir)->child($build->install_prop->{prefix});
+      my $process_file_cb;
+      if( exists $ENV{DESTDIR} ) {
+        $build->log("copy stuff to $ENV{DESTDIR}");
+        my $destdir     = $ENV{DESTDIR};
+        my $destdir_abs = path($destdir)->child($build->install_prop->{prefix});
+        $process_file_cb = sub {
+          $destdir_abs->child(shift)->stringify
+        };
+      } else {
+        $process_file_cb = sub {
+          path($build->install_prop->{prefix})
+            ->child(shift)->stringify
+        };
+      }
 
-      push @dirs, $destdir_abs->child($_)->stringify
+      push @dirs, $process_file_cb->($_)
         for (qw{include lib bin});
 
       Alien::Build::CommandSequence->new(
         (map { join ' ', '%{install} -d', $_ } @dirs),
         (map {
-          join ' ', '%{install} -c', $_, $destdir_abs->child($fileset{$_})->stringify
+          join ' ', '%{install} -c', $_, $process_file_cb->($fileset{$_})
         } keys %fileset),
       )->execute($build);
     }
