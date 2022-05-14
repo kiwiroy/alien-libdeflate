@@ -66,7 +66,7 @@ share {
       my %fileset = (
         (map { $_ => path('include')->child($_)->stringify } qw{libdeflate.h}),
         (map { $_ => path('lib')->child($_)->stringify } ( $static_lib, $shared_lib )),
-        (map { $_ => path('bin')->child($_)->stringify } @progs),
+        (map { $_ => path('bin')->child("libdeflate-$_")->stringify } @progs),
       );
 
       $build->log("copy stuff to $ENV{DESTDIR}");
