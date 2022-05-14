@@ -6,6 +6,8 @@ use Test::More;
 use Test::Alien qw{alien_ok ffi_ok};
 use Alien::libdeflate;
 
+alien_ok 'Alien::libdeflate';
+
 ffi_ok {
     symbols => [
         qw{
