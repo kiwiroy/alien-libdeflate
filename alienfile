@@ -15,9 +15,11 @@ meta->interpolator->replace_helper(install => sub {
 plugin 'Probe::CBuilder' => (
   cflags => join(' ', grep { defined && length } $ENV{ALIEN_LIBDEFLATE_PROBE_CFLAGS}),
   libs   => join(' ', grep { defined && length } $ENV{ALIEN_LIBDEFLATE_PROBE_LDFLAGS}, '-ldeflate'),
+  version => qr/([0-9\.]+)/,
   program => <<'END_OF_CODE');
+#include <stdio.h>
 #include <libdeflate.h>
-int main(int argc, char *argv[]) { return 0; }
+int main(int argc, char *argv[]) { printf("%s\n", LIBDEFLATE_VERSION_STRING); return 0; }
 END_OF_CODE
 
 share {
