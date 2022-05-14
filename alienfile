@@ -48,7 +48,7 @@ share {
   my $CC = qq(CC=@{[ $Config::Config{cc} ]});
   my $static_lib = 'libdeflate.a';
   my $shared_lib = qq(libdeflate.@{[ $Config::Config{so} ]});
-  my @progs = map { "$_@{[ $Config::Config{_exe} ]}" } qw(gzip gunzip checksum);
+  my @progs = map { "$_@{[ $Config::Config{_exe} ]}" } qw(gzip gunzip);
   build [
     [ '%{gmake}',
         $CC,
