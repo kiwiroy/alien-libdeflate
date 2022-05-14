@@ -106,7 +106,7 @@ share {
     my $lib     = $prefix->child('lib')->stringify;
     my $include = $prefix->child('include');
     my $dynamic = $prefix->child('lib', 'dynamic');
-    
+
     $build->runtime_prop->{cflags}      = "-I$include";
     $build->runtime_prop->{libs}        = "-L$dynamic -ldeflate";
     $build->runtime_prop->{libs_static} = "-L$lib -ldeflate";
