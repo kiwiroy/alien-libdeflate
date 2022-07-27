@@ -65,10 +65,11 @@
 #!end included /Users/hrards/perl5/perlbrew/perls/perl-5.24.1/lib/5.24.1/ExtUtils/MANIFEST.SKIP
 
 \.swp$
-^local/
+^local.*/
 ^MANIFEST\.SKIP
 ^README\.pod
-^\.travis\.yml$
+^cpanfile$
 ^\.ship\.conf$
 ^\.proverc$
 ^_alien/
+^\.github/
