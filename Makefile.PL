@@ -23,11 +23,13 @@ WriteMakefile($abmm->mm_args(
   CONFIGURE_REQUIRES => {
     'Alien::Build'        => '1.41',
     'Alien::Build::MM'    => '1.41',
+    'Alien::Build::Plugin::Download::GitHub' => 0,
     'ExtUtils::MakeMaker' => '6.52',
   },
   BUILD_REQUIRES => {
     'Alien::Build'        => '1.41',
     'Alien::Build::MM'    => '1.41',
+    'Alien::Build::Plugin::Download::GitHub' => 0,
     'ExtUtils::MakeMaker' => '6.52',
   },
   PREREQ_PM => {
