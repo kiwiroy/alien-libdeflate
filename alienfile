@@ -22,6 +22,15 @@ plugin 'Probe::CBuilder' => (
 int main(int argc, char *argv[]) { printf("%s\n", LIBDEFLATE_VERSION_STRING); return 0; }
 END_OF_CODE
 
+meta->around_hook( gather_system => sub {
+  my $orig = shift;
+  my ($build) = @_;
+  $orig->(@_);
+  if( ! exists $build->runtime_prop->{ffi_name} ) {
+    $build->runtime_prop->{ffi_name} = 'deflate';
+  }
+});
+
 share {
   ## *bsd make is incompatible
   requires 'Alien::gmake' => 0;
