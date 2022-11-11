@@ -27,9 +27,10 @@ share {
   requires 'Alien::gmake' => 0;
   requires 'Config';
 
-  start_url "https://github.com/ebiggers/libdeflate/releases";
-  plugin Download => (
-    filter => qr/^v.*\.tar\.gz$/,
+  plugin 'Download::GitHub' => (
+    github_user => 'ebiggers',
+    github_repo => 'libdeflate',
+    asset_name => qr/^v.*\.tar\.gz$/,
     version => qr/([0-9\.]+)/,
   );
 

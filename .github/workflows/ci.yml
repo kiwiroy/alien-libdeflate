@@ -45,7 +45,8 @@ jobs:
           eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib)
           cpanm --notest --with-recommends --with-suggests \
             ExtUtils::MakeMaker \
-            Alien::Build::MM
+            Alien::Build::MM \
+            Alien::Build::Plugin::Download::GitHub
       - name: Make distribution
         shell: bash
         run: |
