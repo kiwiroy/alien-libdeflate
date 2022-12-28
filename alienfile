@@ -115,7 +115,7 @@ share {
     my $prefix  = path($build->install_prop->{prefix})->absolute;
     my $lib     = $prefix->child('lib')->stringify;
     my $include = $prefix->child('include');
-    my $dynamic = $prefix->child('lib', 'dynamic');
+    my $dynamic = $prefix->child('dynamic');
 
     $build->runtime_prop->{cflags}      = "-I$include";
     $build->runtime_prop->{libs}        = "-L$dynamic -ldeflate";
